@@ -1,2 +1,9 @@
-# autonomous-trader
-My autonomous trader for B3 using XP account and Metatrader 5 to dispatch the orders
+# The Turtle Trading Agent
+### Personal models and bots for automating trade decisions on B3
+
+The notebooks and Python files provided here comprises my experimental AI workers and strategies to trade on B3. Use with caution!
+
+
+
+![Oh boy!](/extra/benlauderdale.gif)
+
