@@ -25,7 +25,7 @@ while RUN==1:
         
     
     Ativo = 'PETR4'
-    lot = 1000
+    lot = 500
     
     #PARÂMETROS PARA AS MM
     sht = 5
