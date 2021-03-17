@@ -1,7 +1,9 @@
 import pandas as pd
 import numpy as np
 
-def config_param(stocks,sht,lng):
+
+
+def config_param(stocks, sht, lng):
     
 # CONFIGURANDO OS PARÂMETROS DA ESTRATÉGIA
 
@@ -14,8 +16,9 @@ def config_param(stocks,sht,lng):
     
     stocks['Status'] = stocks['Sht'] > stocks['Lng']
     
-    ## O start da decisão é a alteração do dia anterior. Se houver alteração de Status, está na hora da tomada da decisão.
-    ## Vamos usar o status do dia anterior ('.shift()'). Por padrão, '.shift()' utiliza 1 dia como parâmetro.
+    # O start da decisão é a alteração do instante anterior (dia, hora, minuto). 
+    # Se houver alteração de Status, está na hora da tomada da decisão.
+    # Vamos usar o status do instante anterior ('.shift()'). Por padrão, '.shift()' utiliza 1 unidade como parâmetro.
     
     stocks['Statusd-1'] = stocks['Status'].shift(1)
     

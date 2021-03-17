@@ -16,16 +16,37 @@ import MetaTrader5 as mt5
 # import pytz module for working with time zone
 import pytz 
 
+
+class style():
+    BLACK = '\033[30m'
+    RED = '\033[31m'
+    GREEN = '\033[32m'
+    YELLOW = '\033[33m'
+    BLUE = '\033[34m'
+    MAGENTA = '\033[35m'
+    CYAN = '\033[36m'
+    WHITE = '\033[37m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
+    RESET = '\033[0m'
+
+
 RUN=1
 while RUN==1:
     # establish connection to MetaTrader 5 terminal
     if not mt5.initialize():
         print("initialize() failed, error code =",mt5.last_error())
+        mt5.shutdown() 
+
+    # request connection status and parameters    
+    info = mt5.terminal_info()
+    if info.trade_allowed == False:
+        print( "Auto-trading disabled in Terminal, enable it" )
         quit()
-        
-    
+
+    #PARÂMETROS PARA O TRADING
     Ativo = 'PETR4'
-    lot = 500
+    lotes = 1000
     
     #PARÂMETROS PARA AS MM
     sht = 5
@@ -33,7 +54,7 @@ while RUN==1:
     
     timeframe = mt5.TIMEFRAME_M5
     
-    xfh = download_data(Ativo,timeframe)
+    xfh = download_data(Ativo, timeframe)
     stocks = xfh.copy()
     
     # Médias Móveis
@@ -42,7 +63,7 @@ while RUN==1:
     stocks['Lng'] = stocks['Adj Close'].rolling(window=lng).mean()
     stocks.dropna(inplace=True)
     
-    stocks = config_param(stocks,sht,lng)
+    stocks = config_param(stocks, sht, lng)
     
     Var = stocks['action'].tail(1).values
     Var = Var[0]
@@ -57,23 +78,25 @@ while RUN==1:
     Var4 = Var4[0]
     
     if Var == 'buy':
-        
-        result,price = buy(Ativo,lot)
-        print(result)
-        import time
-        time.sleep(60)
+       # check the execution result
+       result,price = buy(symbol = Ativo, volume = lotes)
+       print(result, style.BLUE)
+       import time
+       time.sleep(60)
     
     if Var == 'sell':
-        
-        result,price = sell(Ativo,lot)
-        print(result)
+        # check the execution result
+        result,price = sell(symbol = Ativo, volume = lotes)
+        print(result, style.RED)
         import time
         time.sleep(60)
-        
+
+    print('')
     now = dt.datetime.now()
     # print(now.strftime("%Y-%m-%d %H:%M:%S"))
     print(Var)
+    print('Close: ${Var2:.2f} | Sht: ${Var3:.2f} | Lng: ${Var4:.2f}'.format(Var2=Var2, Var3=Var3, Var4=Var4),  style.RESET)
+    # print(info.company)
     print('')
-    print('Close: ${Var2:.2f} / Sht: ${Var3:.2f} / Lng: ${Var4:.2f}'.format(Var2=Var2, Var3=Var3, Var4=Var4))
     import time
-    time.sleep(60) # Sleep for 1 seconds
+    time.sleep(60) # Sleep for 60 seconds

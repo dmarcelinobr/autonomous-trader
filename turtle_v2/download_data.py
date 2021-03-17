@@ -18,22 +18,22 @@ if not mt5.initialize():
     quit()
     
     
-def download_data(Ativo,timeframe):
+def download_data(symbol,timeframe):
     
     
     from pytz import timezone
-    A = datetime.now(timezone("America/Sao_Paulo"))
-    NOW = A.hour
-    dia = A.day
-    mes = A.month
-    ano = A.year
+    A=datetime.now(timezone("America/Sao_Paulo"))
+    NOW= A.hour
+    dia=A.day
+    mes= A.month
+    ano= A.year
     # set time zone to UTC
     timezone = pytz.timezone("America/Sao_Paulo")
     # create 'datetime' objects in UTC time zone to avoid the implementation of a local time zone offset
     utc_from = datetime(2021, 1, 1, tzinfo=timezone)
     utc_to = datetime(ano, mes, dia,NOW , tzinfo=timezone)
     # get bars from USDJPY M5 within the interval of 2020.01.10 00:00 - 2020.01.11 13:00 in UTC time zone
-    rates = mt5.copy_rates_range(Ativo,timeframe, utc_from, utc_to)
+    rates = mt5.copy_rates_range(symbol,timeframe, utc_from, utc_to)
      
     # shut down connection to the MetaTrader 5 terminal
     mt5.shutdown()
